@@ -19,5 +19,6 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
+// Admin Routes
 Route::get('/admin/orders', [AdminController::class, 'index'])->name('admin.orders');
 Route::post('/admin/orders/{order}/status', [AdminController::class, 'updateStatus'])->name('admin.orders.status');
