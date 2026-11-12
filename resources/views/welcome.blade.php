@@ -45,22 +45,32 @@
 
     <div class="absolute inset-0 bg-pattern z-0 pointer-events-none"></div>
 
-    <nav class="relative z-10 w-full py-4 md:py-6 px-4 md:px-12 flex justify-between items-center border-b border-glam-blush bg-white/80 backdrop-blur-md">
+    <nav class="relative z-10 w-full py-4 md:py-6 px-4 md:px-12 flex flex-col md:flex-row justify-between items-center border-b border-glam-blush bg-white/80 backdrop-blur-md gap-4">
         <h1 class="text-2xl md:text-3xl font-serif font-bold text-glam-olive tracking-widest uppercase">
             GlamBoutique
         </h1>
-        <div class="flex items-center gap-4 md:gap-8">
+        
+        <div class="flex flex-wrap justify-center items-center gap-3 md:gap-6">
             
-            <!-- Naya Dashboard Button -->
-            <a href="{{ route('admin.orders') }}" class="text-xs md:text-sm font-medium text-glam-dark hover:text-glam-pink transition-colors flex items-center gap-1 uppercase tracking-wider">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-                <span class="hidden sm:inline">Dashboard</span>
-            </a>
-
             <a href="{{ route('cart.index') }}" class="text-xs md:text-sm font-medium text-glam-dark hover:text-glam-pink transition-colors flex items-center gap-1 md:gap-2 uppercase tracking-wider">
                 <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                <span class="hidden sm:inline">Shopping Bag</span> ({{ count(session()->get('cart', [])) }})
+                <span class="hidden sm:inline">Bag</span> ({{ count(session()->get('cart', [])) }})
             </a>
+
+            @if (Route::has('login'))
+                @auth
+                    <!-- Dashboard Button (Har logged-in user ke liye) -->
+                    <a href="{{ route('dashboard') }}" class="text-xs md:text-sm font-bold text-glam-pink hover:text-glam-olive transition-colors uppercase tracking-wider bg-glam-blush/30 px-3 py-1.5 rounded-lg">Dashboard</a>
+
+                    <form method="POST" action="{{ route('logout') }}" class="inline">
+                        @csrf
+                        <button type="submit" class="text-xs md:text-sm font-medium text-red-400 hover:text-red-600 transition-colors uppercase tracking-wider">Log Out</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="text-xs md:text-sm font-medium text-glam-dark hover:text-glam-pink transition-colors uppercase tracking-wider">Log In</a>
+                    <a href="{{ route('register') }}" class="bg-glam-pink text-white text-xs md:text-sm font-medium py-2 px-4 rounded-full hover:bg-glam-olive transition-colors shadow-sm">Register</a>
+                @endauth
+            @endif
         </div>
     </nav>
 

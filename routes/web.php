@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Product;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     $products = Product::all();
@@ -19,6 +21,19 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 Route::post('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 
-// Admin Routes
-Route::get('/admin/orders', [AdminController::class, 'index'])->name('admin.orders');
-Route::post('/admin/orders/{order}/status', [AdminController::class, 'updateStatus'])->name('admin.orders.status');
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    Route::get('/admin/orders', [AdminController::class, 'index'])->name('admin.orders');
+    Route::post('/admin/orders/{order}/status', [AdminController::class, 'updateStatus'])->name('admin.orders.status');
+
+    Route::post('/orders/{order}/cancel', [DashboardController::class, 'cancelOrder'])->name('orders.cancel');
+
+    // Profile Routes (Jo ghalti se reh gaye thay)
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';

@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - GlamBoutique</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script>
@@ -35,7 +32,6 @@
 </head>
 <body class="min-h-screen bg-glam-beige font-sans text-glam-dark flex">
 
-    <!-- Left Sidebar -->
     <aside class="w-64 bg-white border-r border-glam-blush/50 hidden md:flex flex-col shadow-sm">
         <div class="p-8 border-b border-glam-blush/30">
             <h1 class="text-2xl font-serif font-bold text-glam-olive tracking-widest uppercase">
@@ -51,17 +47,26 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 Back to Store
             </a>
+            <form method="POST" action="{{ route('logout') }}" class="block w-full">
+                @csrf
+                <button type="submit" class="w-full flex items-center gap-3 px-8 py-4 text-red-400 hover:bg-red-50 transition-colors font-medium">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Log Out
+                </button>
+            </form>
         </nav>
     </aside>
 
-    <!-- Main Content -->
     <div class="flex-grow flex flex-col min-h-screen overflow-hidden">
         
         <header class="bg-white/80 backdrop-blur-md border-b border-glam-blush/50 px-8 py-5 flex justify-between items-center shadow-sm z-10">
             <div class="flex items-center gap-4">
                 <h2 class="text-2xl font-serif font-bold text-glam-dark">Order Management</h2>
             </div>
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-6">
+                <a href="{{ route('home') }}" class="text-sm font-medium text-glam-olive hover:text-glam-pink transition-colors flex items-center gap-2 md:hidden">
+                    Store
+                </a>
                 <span class="text-sm font-medium text-gray-500 hidden sm:inline">Welcome, Admin</span>
                 <div class="w-10 h-10 rounded-full bg-glam-pink/20 flex items-center justify-center text-glam-pink font-bold shadow-inner">A</div>
             </div>
