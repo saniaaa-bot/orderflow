@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -49,7 +50,8 @@ class CartController extends Controller
     {
         $request->validate([
             'customer_name' => 'required|string|max:255',
-            'customer_email' => 'required|email',
+            'customer_phone' => 'required|string|max:20',
+            'shipping_address' => 'required|string',
         ]);
 
         $cart = session()->get('cart');
@@ -65,7 +67,7 @@ class CartController extends Controller
                 
                 if(!$product || $product->stock < $details['quantity']) {
                     DB::rollBack();
-                    return redirect()->back()->with('error', 'Sorry, ' . ($product ? $product->name : 'Item') . ' is out of stock or insufficient quantity!');
+                    return redirect()->back()->with('error', 'Sorry, ' . ($product ? $product->name : 'Item') . ' is out of stock!');
                 }
                 
                 $total += $product->price * $details['quantity'];
@@ -73,7 +75,9 @@ class CartController extends Controller
 
             $order = Order::create([
                 'customer_name' => $request->customer_name,
-                'customer_email' => $request->customer_email,
+                'customer_email' => Auth::user()->email,
+                'customer_phone' => $request->customer_phone,
+                'shipping_address' => $request->shipping_address,
                 'total_amount' => $total,
                 'status' => 'Pending'
             ]);
@@ -93,7 +97,7 @@ class CartController extends Controller
 
             DB::commit();
             session()->forget('cart');
-            return redirect()->route('home')->with('success', 'Order placed successfully! Thank you.');
+            return redirect()->route('dashboard')->with('success', 'Order placed successfully! Thank you.');
             
         } catch (\Exception $e) {
             DB::rollBack();
